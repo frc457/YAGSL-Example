@@ -33,7 +33,7 @@ public class RobotContainer
                                                                                 "swerve/neo"));
 
   private final int controllerLeftStickX  = 1;
-  private final int controllerLeftStickY  = 3;
+  private final int controllerLeftStickY  = 0;
   private final int controllerRightStickX = 2;
   private final int controllerRightStickY = 5;
 
