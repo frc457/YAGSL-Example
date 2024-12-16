@@ -45,16 +45,6 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
 
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the desired angle NOT angular rotation
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(controllerLeftStickX), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(controllerLeftStickY), OperatorConstants.LEFT_X_DEADBAND),
-        () -> driverXbox.getRawAxis(controllerRightStickX),
-        () -> driverXbox.getRawAxis(controllerRightStickY));
 
     // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
@@ -64,20 +54,11 @@ public class RobotContainer
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(driverXbox.getRawAxis(controllerLeftStickX), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driverXbox.getRawAxis(controllerLeftStickY), OperatorConstants.LEFT_X_DEADBAND),
-        () -> driverXbox.getRawAxis(controllerRightStickX));
+        () -> {
+          return -driverXbox.getRawAxis(controllerRightStickX)*0.5;
+        });
 
-    Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> driverXbox.getRawAxis(controllerRightStickX) * 0.5);
-
-    if (RobotBase.isSimulation())
-    {
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
-    } else
-    {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
   }
 
   /**
